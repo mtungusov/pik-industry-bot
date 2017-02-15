@@ -57,11 +57,17 @@ Telegram::Bot::Client.run($settings.telegram_api_token, logger: $logger) do |bot
     # Отчеты. Стройка
     #
     when 'Боровское шоссе вл2 корп1-1'
-      send_report(bot, message.chat.id, message.text)
+      # send_report(bot, message.chat.id, message.text)
+      filename = "#{$cur_dir}/files/test.htm"
+      bot.api.send_document(chat_id: message.chat.id, document: Faraday::UploadIO.new(filename, 'text/html'))
     when 'Боровское шоссе вл2 корп1-2'
-      send_report(bot, message.chat.id, message.text)
+      # send_report(bot, message.chat.id, message.text)
+      filename = "#{$cur_dir}/files/test2.htm"
+      bot.api.send_document(chat_id: message.chat.id, document: Faraday::UploadIO.new(filename, 'text/html'))
     when 'Боровское шоссе вл2 корп2-1'
       send_report(bot, message.chat.id, message.text)
+      # filename = "#{$cur_dir}/files/test.svg"
+      # bot.api.send_photo(chat_id: message.chat.id, photo: Faraday::UploadIO.new(filename, 'image/svg'))
     when 'Боровское шоссе вл2 корп2-2'
       send_report(bot, message.chat.id, message.text)
     #

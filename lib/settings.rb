@@ -2,7 +2,7 @@ require "settingslogic"
 
 $cur_dir = $root_dir.include?('uri:classloader:') ? File.split($root_dir).first : "#{$root_dir}"
 puts "Cur dir: #{$cur_dir}"
-cf = "#{$cur_dir}/config/config.yml"
+cf = File.join($cur_dir, 'config', 'config.yml')
 puts "Config File: #{cf}"
 unless File.exist? cf
   puts "Error: Not found config file - #{cf}!"
@@ -12,4 +12,7 @@ end
 class Settings < Settingslogic
   namespace ENV['RUN_ENV']
 end
+
 $settings = Settings.new cf
+$file_store_path = File.join($cur_dir, 'files')
+$reports_store = {}
