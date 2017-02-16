@@ -14,7 +14,7 @@ class Caches::UsersStore
   end
 
   def get(key)
-    store[key]
+    store.fetch key, 'root'
   end
 
 end

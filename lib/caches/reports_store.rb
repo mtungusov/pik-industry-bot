@@ -1,14 +1,14 @@
 module Caches; end
 
 class Caches::ReportsStore
-  def initialize(report_dir_path: , filemask:)
+  def initialize(report_dir_path: , report_ext:)
     @report_dir_path = report_dir_path
-    @filemask = filemask
+    @report_ext = report_ext
     @store = Concurrent::Atom.new Concurrent::Hash.new
   end
 
   def update
-    dir_tree = _dir_tree(@report_dir_path, @filemask)
+    dir_tree = _dir_tree(@report_dir_path, @report_ext)
     # @store.swap do |s|
     #   s.clear
     #   _make_report_store dir_tree, s
@@ -21,8 +21,13 @@ class Caches::ReportsStore
     @store.value
   end
 
-  def _dir_tree(path, filemask)
+  def content_by(level)
+    store.key?(level) ? store[level][:content] : {}
+  end
+
+  def _dir_tree(path, report_ext)
     # List files with filemask
+    filemask = "*.#{report_ext}"
     full_filenames = Dir.glob("#{path}#{File::SEPARATOR}**#{File::SEPARATOR}#{filemask}")
     # Remove path from filename
     short_filenames = full_filenames.map(&->(s) { s.gsub("#{path}#{File::SEPARATOR}", '') })
@@ -40,10 +45,10 @@ class Caches::ReportsStore
     backbutton_path = path.size > 1 ? path[0...-1] : ['root']
     backbutton_path_str = item.size == 1 ? '' : backbutton_path.join(',')
 
-    _content = _hash_tree.key?(path_str) ? _hash_tree[path_str][:content] : Set.new
+    _content = _hash_tree.key?(path_str) ? _hash_tree[path_str][:content] : Concurrent::Hash.new
     _hash_tree[path_str] = {
       backbutton_path: backbutton_path_str,
-      content: _content << { name: item.last, type: type}
+      content: _content.merge!(item.last => type)
     }
 
     hash_tree.merge _process_dir_tree_item(item[0...-1], _hash_tree, :dir)
