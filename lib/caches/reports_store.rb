@@ -22,7 +22,16 @@ class Caches::ReportsStore
   end
 
   def content_by(level)
-    store.key?(level) ? store[level][:content] : {}
+    level_valid?(level) ? store[level][:content] : {}
+  end
+
+  def level_valid?(level)
+    store.key? level
+  end
+
+  def get_back_path(level)
+    lvl = level_valid?(level) ? store[level][:backbutton_path] : 'root'
+    lvl.empty? ? 'root' : lvl
   end
 
   def _dir_tree(path, report_ext)
