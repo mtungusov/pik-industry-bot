@@ -21,10 +21,16 @@ $report_ext = $settings.report_file_ext
 
 require 'lib/caches'
 $RC = Caches::ReportsStore.new(report_dir_path: $report_dir_path, report_ext: $report_ext)
-$RC.update
 
-# DEBUG
-puts $RC.store
+Thread.abort_on_exception = true
+
+Thread.new do
+  $RC.update
+  # DEBUG
+  $logger.info $RC.store.to_s
+  sleep $settings.period_report_dir_update
+end
+
 
 $UC = Caches::UsersStore.new
 
