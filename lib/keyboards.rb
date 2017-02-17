@@ -34,6 +34,6 @@ class Keyboards::Maker
     end
 
     _content << 'Назад'  if (_content.empty? or level != 'root')
-    [_content]
+    _content.zip
   end
 end

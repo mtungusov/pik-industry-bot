@@ -1,4 +1,5 @@
-require "settingslogic"
+require 'settingslogic'
+require 'dotenv'
 
 $cur_dir = $root_dir.include?('uri:classloader:') ? File.split($root_dir).first : "#{$root_dir}"
 puts "Cur dir: #{$cur_dir}"
@@ -9,10 +10,17 @@ unless File.exist? cf
   exit!
 end
 
+sf = File.join($cur_dir, 'config', "secrets.env.#{ENV['RUN_ENV']}")
+puts "Secrets Env File: #{sf}"
+unless File.exist? sf
+  puts "Error: Not found secrets file - #{sf}!"
+  exit!
+end
+
 class Settings < Settingslogic
   namespace ENV['RUN_ENV']
 end
 
+Dotenv.load sf
+
 $settings = Settings.new cf
-$file_store_path = File.join($cur_dir, 'files')
-$reports_store = {}

@@ -20,6 +20,17 @@ module Reports
   end
 end
 
+# def send_report(bot, chat_id, name)
+#   q = Reports::get name
+#   bot.api.send_message(chat_id: chat_id, text: q)
+#   photo = Reports::photo(name)
+#   if photo
+#     bot.api.send_photo(chat_id: chat_id, photo: Reports::photo(name))
+#   else
+#     bot.api.send_message(chat_id: chat_id, text: 'Файл не найден!')
+#   end
+# end
+
 
 # Report Store
 # {

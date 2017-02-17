@@ -43,6 +43,7 @@ configurations {
 dependencies {
     gems 'rubygems:telegram-bot-ruby:0.7.2'
     gems 'rubygems:settingslogic:2.0.9'
+    gems 'rubygems:dotenv:2.2.0'
     gems 'rubygems:concurrent-ruby:1.0.4'
     gems 'rubygems:pry:0.10.4'
 }
