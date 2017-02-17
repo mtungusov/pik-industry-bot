@@ -10,7 +10,6 @@ module Handlers
     def process
       # Get level
       @level = _get_level
-      # Get keyboard
 
       case @message.text
       when 'Назад'
@@ -22,15 +21,7 @@ module Handlers
 
     def process_btn
       if _is_report_file? @message.text
-        filename = "#{@message.text}.#{$report_ext}"
-        path = @level.split(',').join(File::SEPARATOR)
-        fullpath = "#{$report_dir_path}#{File::SEPARATOR}#{path}#{File::SEPARATOR}#{filename}"
-        report_file = Reports::html_report fullpath
-        if report_file
-          @bot.api.send_document(chat_id: @chat, document: report_file)
-        else
-          @bot.api.send_message(chat_id: @chat, text: "File не найден! Level: #{@level}")
-        end
+        process_report_file
       else
         process_level_btn
       end
@@ -40,14 +31,30 @@ module Handlers
       old_level = @level
       @level = _get_back_level
       _set_level
-      @bot.api.send_message(chat_id: @chat, text: "BackBtn! Level from #{old_level} to #{@level}", reply_markup: _get_kb)
+      # msg = "BackBtn! Level from #{old_level} to #{@level}"
+      msg = 'Выберите раздел или отчет'
+      @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
     end
 
     def process_level_btn
       old_level = @level
       @level = old_level == 'root' ? @message.text : [old_level, @message.text].join(',')
       _set_level
-      @bot.api.send_message(chat_id: @chat, text: "Btn! Level from #{old_level} to #{@level}", reply_markup: _get_kb)
+      # msg = "Btn! Level from #{old_level} to #{@level}"
+      msg = 'Выберите раздел или отчет'
+      @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+    end
+
+    def process_report_file
+      filename = "#{@message.text}.#{$report_ext}"
+      path = @level.split(',').join(File::SEPARATOR)
+      fullpath = "#{$report_dir_path}#{File::SEPARATOR}#{path}#{File::SEPARATOR}#{filename}"
+      report_file = Reports::html_report fullpath
+      if report_file
+        @bot.api.send_document(chat_id: @chat, document: report_file)
+      else
+        @bot.api.send_message(chat_id: @chat, text: "File не найден! Level: #{@level}")
+      end
     end
 
     def _get_level
