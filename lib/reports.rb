@@ -16,7 +16,8 @@ module Reports
 
   def html_report(filename)
     return nil unless File.exist? filename
-    Faraday::UploadIO.new(filename, 'text/html')
+    clean_filename = File.basename(filename, ".#{$report_ext}")[0..40] + ".#{$report_ext}"
+    Faraday::UploadIO.new(filename, 'text/html', clean_filename)
   end
 end
 

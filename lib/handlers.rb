@@ -49,6 +49,8 @@ module Handlers
       filename = "#{@message.text}.#{$report_ext}"
       path = @level.split(',').join(File::SEPARATOR)
       fullpath = "#{$report_dir_path}#{File::SEPARATOR}#{path}#{File::SEPARATOR}#{filename}"
+      $logger.debug fullpath
+
       report_file = Reports::html_report fullpath
       if report_file
         @bot.api.send_document(chat_id: @chat, document: report_file)

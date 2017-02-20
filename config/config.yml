@@ -1,12 +1,14 @@
 ---
 defaults: &defaults
   app_name: "pik-industry-bot"
-  report_dir_path: "/Users/misha/projects/pik-bot/src/pik-industry-bot/files"
   report_file_ext: 'html'
-  period_report_dir_update: 287
 
 development:
   <<: *defaults
+  report_dir_path: "/Users/misha/projects/pik-bot/src/pik-industry-bot/files"
+  period_report_dir_update: 30
 
 production:
   <<: *defaults
+  report_dir_path: "/mnt/1s_reports"
+  period_report_dir_update: 287

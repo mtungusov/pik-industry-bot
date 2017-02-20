@@ -8,6 +8,7 @@ class Caches::ReportsStore
   end
 
   def update
+    # $logger.debug 'start RC update'
     dir_tree = _dir_tree(@report_dir_path, @report_ext)
     # @store.swap do |s|
     #   s.clear

@@ -22,16 +22,6 @@ $report_ext = $settings.report_file_ext
 require 'lib/caches'
 $RC = Caches::ReportsStore.new(report_dir_path: $report_dir_path, report_ext: $report_ext)
 
-Thread.abort_on_exception = true
-
-Thread.new do
-  $RC.update
-  # DEBUG
-  $logger.info $RC.store.to_s
-  sleep $settings.period_report_dir_update
-end
-
-
 $UC = Caches::UsersStore.new
 
 require 'lib/keyboards'
@@ -39,6 +29,18 @@ $KM = Keyboards::Maker.new(store: $RC, report_ext: $report_ext)
 
 require 'lib/reports'
 require 'lib/handlers'
+
+require 'thread'
+Thread.abort_on_exception = true
+
+Thread.new do
+  while true do
+    $RC.update
+    # DEBUG
+    $logger.debug $RC.store.to_s
+    sleep $settings.period_report_dir_update
+  end
+end
 
 Telegram::Bot::Client.run(ENV['TELEGRAM_API_TOKEN'], logger: $logger) do |bot|
   bot.listen do |message|
