@@ -54,6 +54,7 @@ module Handlers
       report_file = Reports::html_report fullpath
       if report_file
         @bot.api.send_document(chat_id: @chat, document: report_file)
+        report_file.io.close
       else
         @bot.api.send_message(chat_id: @chat, text: "File не найден! Level: #{@level}")
       end
