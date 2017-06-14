@@ -50,7 +50,7 @@ dependencies {
 
 // jrubyJar {
 //     initScript runnable()
-//     jrubyVersion '9.1.7.0'
+//     jrubyVersion '9.1.8.0'
 //     from 'service.rb'
 //     // into('lib') { from 'lib' }
 // }
