@@ -37,7 +37,7 @@ Thread.new do
   while true do
     $RC.update
     # DEBUG
-    $logger.debug $RC.store.to_s
+    # $logger.debug $RC.store.to_s
     sleep $settings.period_report_dir_update
   end
 end
