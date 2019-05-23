@@ -3,6 +3,7 @@ require 'dotenv'
 
 $cur_dir = $root_dir.include?('uri:classloader:') ? File.split($root_dir).first : "#{$root_dir}"
 puts "Cur dir: #{$cur_dir}"
+
 cf = File.join($cur_dir, 'config', 'config.yml')
 puts "Config File: #{cf}"
 unless File.exist? cf

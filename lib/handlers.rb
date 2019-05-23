@@ -7,6 +7,24 @@ module Handlers
       @chat = message.chat.id
     end
 
+    def send_message(chat, msg, reply_markup)
+      # @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+      begin
+        @bot.api.send_message(chat_id: chat, text: msg, reply_markup: reply_markup)
+      rescue Exception => e
+        $logger.debug "Error sending message: #{e.message}"
+      end
+    end
+
+    def send_document(chat, document)
+      # @bot.api.send_document(chat_id: @chat, document: report_file)
+      begin
+        @bot.api.send_document(chat_id: chat, document: document)
+      rescue Exception => e
+        $logger.debug "Error sending document: #{e.message}"
+      end
+    end
+
     def process
       # Get level
       @level = _get_level
@@ -33,7 +51,8 @@ module Handlers
       _set_level
       # msg = "BackBtn! Level from #{old_level} to #{@level}"
       msg = 'Выберите раздел или отчет'
-      @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+      # @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+      send_message(@chat, msg, _get_kb)
     end
 
     def process_level_btn
@@ -42,7 +61,8 @@ module Handlers
       _set_level
       # msg = "Btn! Level from #{old_level} to #{@level}"
       msg = 'Выберите раздел или отчет'
-      @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+      # @bot.api.send_message(chat_id: @chat, text: msg, reply_markup: _get_kb)
+      send_message(@chat, msg, _get_kb)
     end
 
     def process_report_file
@@ -53,10 +73,12 @@ module Handlers
 
       report_file = Reports::html_report fullpath
       if report_file
-        @bot.api.send_document(chat_id: @chat, document: report_file)
+        # @bot.api.send_document(chat_id: @chat, document: report_file)
+        send_document(@chat, report_file)
         report_file.io.close
       else
-        @bot.api.send_message(chat_id: @chat, text: "File не найден! Level: #{@level}")
+        # @bot.api.send_message(chat_id: @chat, text: "File не найден! Level: #{@level}")
+        send_message(@chat, "File не найден! Level: #{@level}")
       end
     end
 

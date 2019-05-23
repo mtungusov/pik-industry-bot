@@ -5,7 +5,7 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  report_dir_path: "/Users/misha/projects/pik-bot/src/pik-industry-bot/files"
+  report_dir_path: "/Users/misha/projects/pik-bot/telegram/pik-industry-bot/files"
   period_report_dir_update: 30
 
 production:

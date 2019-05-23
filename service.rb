@@ -1,4 +1,5 @@
 require 'java'
+# require 'pry'
 
 java_import java.lang.System
 
@@ -8,7 +9,8 @@ puts "Start App"
 puts "Java:  #{System.getProperties["java.runtime.version"]}"
 puts "Jruby: #{ENV['RUBY_VERSION']}"
 
-$root_dir = "#{__dir__}"
+# $root_dir = "#{__dir__}"
+$root_dir = ENV["PWD"]
 puts "Dir: #{$root_dir}"
 
 require 'lib/settings'
@@ -21,8 +23,8 @@ $report_ext = $settings.report_file_ext
 
 require 'lib/caches'
 $RC = Caches::ReportsStore.new(report_dir_path: $report_dir_path, report_ext: $report_ext)
-
 $UC = Caches::UsersStore.new
+# binding.pry
 
 require 'lib/keyboards'
 $KM = Keyboards::Maker.new(store: $RC, report_ext: $report_ext)
